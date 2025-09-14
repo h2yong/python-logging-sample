@@ -1,0 +1,33 @@
+[project]
+name = "python-logging-sample"
+version = "0.1.0"
+description = "Add your description here"
+requires-python = ">=3.11"
+dependencies = [
+    "loguru>=0.7.3",
+    "structlog>=25.4.0",
+]
+
+[dependency-groups]
+dev = [
+    "black>=25.1.0",
+]
+
+[tool.black]
+line-length = 160 # 设置每行的最大字符数（默认 88）
+target-version = ["py39", "py310", "py311"] # 指定 Python 目标版本（如 py38, py39, py310 等）
+skip-string-normalization = false # 禁用字符串标准化（不强制双引号）
+include = '\.pyi?$' # 格式化的文件类型（正则表达式）
+exclude = '''
+/(
+    \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+)/
+''' # 排除的文件或目录（正则表达式）
