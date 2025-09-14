@@ -11,7 +11,9 @@ logger.add(
     rotation="00:00",
     retention="3 days",
     compression="zip",
-    format="{time:HH:mm:ss} | {level} | {message}"
+    format="{time:HH:mm:ss} | {level} | {message}",
+    serialize=True,  # 结构化日志
+    enqueue=True
 )
 
 
@@ -23,14 +25,25 @@ def risky_div(x, y):
 
 risky_div(1, 0)
 
-# 4. 结构化日志
-logger.add("app_{time:YYYY-MM-DD}.log.json", serialize=True, enqueue=True)
-logger = logger.bind(user="alice", ip=socket.gethostbyname(socket.gethostname()))
-logger.info("用户登录")
+# 4. bind上下文信息
+logger_bind = logger.bind(user="alice", ip=socket.gethostbyname(socket.gethostname()))
+logger_bind.info("用户登录")
 
 # 5. 延迟日志
 logger.opt(lazy=True).info("结果：{res}", res=lambda: sum(range(10 ** 7)))
 
+
+# 6. 绑定上下文，如请求request_id，不需要调用bind logger
+def a():
+    import shortuuid
+    logger.configure(extra={"request_id": shortuuid.uuid()})
+    logger.info("a message")
+
+
+def b():
+    logger.info("b message")
+
+
 if __name__ == "__main__":
-    a: str = "abcde"
-    logger.info(f"this is {a}")
+    a()
+    b()
