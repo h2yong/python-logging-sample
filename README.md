@@ -14,7 +14,9 @@
 | 延迟执行           | opt(lazy=True)，昂贵操作仅在需要时才评估                      |
 | 额外的上下文信息   | `logger.bind`, 使用 bind 方法向日志记录器添加额外的上下文信息 |
 
-**参考文档:** [Python日志记录库loguru使用指北](https://www.cnblogs.com/luohenyueji/p/18276299)
+**参考文档:**
+* [Python日志记录库loguru使用指北](https://www.cnblogs.com/luohenyueji/p/18276299)
+* [loguru serialize 减少字段](https://segmentfault.com/a/1190000042389458)
 
 ## [structlog](https://github.com/hynek/structlog/)
 

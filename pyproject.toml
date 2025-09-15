@@ -5,13 +5,16 @@ description = "Add your description here"
 requires-python = ">=3.11"
 dependencies = [
     "loguru>=0.7.3",
-    "shortuuid>=1.0.13",
     "structlog>=25.4.0",
 ]
 
 [dependency-groups]
 dev = [
+    "allure-pytest>=2.15.0",
     "black>=25.1.0",
+    "pytest>=8.4.2",
+    "pytest-cov>=7.0.0",
+    "shortuuid>=1.0.13",
 ]
 
 [tool.black]
