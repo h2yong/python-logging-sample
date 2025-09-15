@@ -22,7 +22,7 @@ request_started.connect(bind_request_details, http_app)
 
 
 @http_app.route("/api/v1/test", methods=["POST"])
-def test_request_id():
+def test_request_id() -> dict[str, Any]:
     payload = request.json
     try:
         request_id = payload.get("request_id")

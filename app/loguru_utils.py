@@ -1,14 +1,14 @@
 import json
 import os
 import sys
-from typing import TypedDict
+from typing import TypedDict, Any
 
 import loguru._handler
 from loguru import logger
 from loguru._recattrs import RecordException
 
 
-def _serialize_record(text: str, record: TypedDict):
+def _serialize_record(text: str, record: TypedDict) -> Any:
     """
     loguru serialize 减少字段
 
@@ -37,7 +37,7 @@ def _serialize_record(text: str, record: TypedDict):
 
 def get_logger(level="INFO",
                env_name: str = "ENV",
-               dev_env_default_name: str = "development"):
+               dev_env_default_name: str = "development") -> Any:
     """
     获取logger
 

@@ -7,6 +7,7 @@ from app import loguru_utils
 
 @allure.story("基础功能")
 def test_structlog_utils():
+    os.environ["ENV"] = "development"
     logger = loguru_utils.get_logger()
     logger.info("info message")
 

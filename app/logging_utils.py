@@ -1,8 +1,9 @@
 import json
 import logging
+from typing import Any
 
 
-def get_logger(logger=None, name="base", logger_type="pa_access", channel=None, level="info"):
+def get_logger(logger=None, name="base", logger_type="pa_access", channel=None, level="info") -> Any:
     """
     获取logger
 

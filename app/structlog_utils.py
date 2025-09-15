@@ -1,6 +1,7 @@
 import logging
 import os
 import sys
+from typing import Any
 
 import structlog
 
@@ -8,7 +9,7 @@ import structlog
 def get_logger(name: str = "base",
                level=logging.INFO,
                env_name: str = "ENV",
-               dev_env_default_name: str = "development"):
+               dev_env_default_name: str = "development") -> Any:
     """
     获取logger
 
