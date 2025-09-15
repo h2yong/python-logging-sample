@@ -9,6 +9,7 @@ import shortuuid
 import structlog
 
 from app import structlog_utils
+from sample.flask_with_structlog_sample import http_app
 
 
 @allure.story("基础用法")
@@ -147,3 +148,15 @@ def test_contextvars():
     ctx = ContextvarsSample()
     ctx.a()
     ctx.a()
+
+
+# https://www.structlog.org/en/stable/frameworks.html#flask
+@allure.story("在flask启动时绑定上下文")
+def test_request_id():
+    test_client = http_app.test_client()
+    res = test_client.post(
+        "/api/v1/test",
+        json={"request_id": shortuuid.uuid()},
+        headers={"Content-Type": "application/json"},
+    )
+    assert res.status_code == 200
