@@ -36,6 +36,7 @@ dev = [
     "mypy>=1.18.1",
     "pytest>=8.4.2",
     "pytest-cov>=7.0.0",
+    "ruff>=0.13.0",
     "shortuuid>=1.0.13",
 ]
 
