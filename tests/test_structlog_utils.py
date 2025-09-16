@@ -1,12 +1,12 @@
 import os
 
-import allure
+import pytest
 
 from app import structlog_utils
 
 
-@allure.story("基础功能")
-def test_structlog_utils():
+@pytest.mark.meta(notes="基础功能")
+def test_structlog_utils() -> None:
     os.environ["ENV"] = "development"
     logger = structlog_utils.get_logger(name=__name__)
     logger.info("info message")

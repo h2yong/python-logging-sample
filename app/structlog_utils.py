@@ -7,7 +7,7 @@ import structlog
 
 
 def get_logger(name: str = "base",
-               level=logging.INFO,
+               level: Any = logging.INFO,
                env_name: str = "ENV",
                dev_env_default_name: str = "development") -> Any:
     """

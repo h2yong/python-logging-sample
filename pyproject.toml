@@ -1,8 +1,29 @@
 [project]
 name = "python-logging-sample"
 version = "0.1.0"
-description = "Add your description here"
+description = "python第三方日志sample，包含loguru/structlog"
+authors = [{ name = "hezhiyong", email = "h2yong@outlook.com" }]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Typing :: Typed",
+    "Topic :: System :: Logging",
+    "Intended Audience :: Developers",
+    "Natural Language :: Chinese",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: Implementation :: PyPy",
+    "Programming Language :: Python :: Implementation :: CPython",
+]
 requires-python = ">=3.11"
+keywords = ["loguru", "structlog", "logging", "logger", "log"]
+readme = 'README.md'
+
 dependencies = [
     "loguru>=0.7.3",
     "structlog>=25.4.0",
@@ -10,13 +31,25 @@ dependencies = [
 
 [dependency-groups]
 dev = [
-    "allure-pytest>=2.15.0",
     "black>=25.1.0",
     "flask>=3.1.2",
+    "mypy>=1.18.1",
     "pytest>=8.4.2",
     "pytest-cov>=7.0.0",
     "shortuuid>=1.0.13",
 ]
+
+[tool.pytest.ini_options]
+addopts = "-l"
+filterwarnings = [
+    # By default, all warnings are treated as errors.
+    'error',
+    # Mixing threads and "fork()" is deprecated, but we need to test it anyway.
+    'ignore:.*use of fork\(\) may lead to deadlocks in the child.*:DeprecationWarning',
+    # Using "set_event_loop()" is deprecated, but no alternative is provided.
+    "ignore:.*'asyncio.set_event_loop' is deprecated.*:DeprecationWarning",
+]
+testpaths = ["tests"]
 
 [tool.black]
 line-length = 160 # 设置每行的最大字符数（默认 88）
@@ -36,3 +69,11 @@ exclude = '''
   | dist
 )/
 ''' # 排除的文件或目录（正则表达式）
+
+[tool.mypy]
+strict = true
+pretty = true
+
+show_error_codes = true
+enable_error_code = ["ignore-without-code"]
+ignore_missing_imports = true

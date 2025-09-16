@@ -2,6 +2,7 @@ import inspect
 import traceback
 from typing import Any
 
+import shortuuid
 import structlog
 from flask import Flask, request, request_started
 
@@ -23,10 +24,10 @@ request_started.connect(bind_request_details, http_app)
 
 @http_app.route("/api/v1/test", methods=["POST"])
 def test_request_id() -> dict[str, Any]:
-    payload = request.json
+    payload: dict[Any, Any] = request.json
     try:
         request_id = payload.get("request_id")
-        logger.info(f"{inspect.currentframe().f_code.co_name} this is test message")
+        logger.info(f"{shortuuid.uuid()} this is test message")
     except Exception as e:
         logger.info(e)
         logger.error(traceback.format_exc())

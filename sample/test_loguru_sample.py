@@ -1,13 +1,13 @@
 import inspect
 import socket
 
-import allure
+import pytest
 import shortuuid
 from loguru import logger
 
 
-@allure.story("基础用法")
-def test_loguru_base():
+@pytest.mark.meta(notes="基础用法")
+def test_loguru_base() -> None:
     """
     Structlog 支持以下日志级别：
     DEBUG: 调试信息。
@@ -24,43 +24,43 @@ def test_loguru_base():
 
 
 @logger.catch
-def risky_div(x, y):
+def risky_div(x: float, y: float) -> float:
     return x / y
 
 
-@allure.story("捕获异常")
-def test_print_exception():
+@pytest.mark.meta(notes="捕获异常")
+def test_print_exception() -> None:
     risky_div(1, 0)
 
 
-@allure.story("bind上下文信息，上下文信息需要每次使用此logger_bind")
-def test_bind():
+@pytest.mark.meta(notes="bind上下文信息，上下文信息需要每次使用此logger_bind")
+def test_bind() -> None:
     logger_bind = logger.bind(user="alice", ip=socket.gethostbyname(socket.gethostname()))
     logger_bind.info("用户登录")
 
 
-@allure.story("延迟日志")
-def test_lazy():
+@pytest.mark.meta(notes="延迟日志")
+def test_lazy() -> None:
     logger.opt(lazy=True).info("结果：{res}", res=lambda: sum(range(10 ** 7)))
 
 
-def a():
+def a() -> None:
     logger.configure(extra={"request_id": shortuuid.uuid()})
     logger.info("a message")
 
 
-def b():
+def b() -> None:
     logger.info("b message")
 
 
-@allure.story("绑定上下文")
-def test_extra():
+@pytest.mark.meta(notes="绑定上下文")
+def test_extra() -> None:
     a()
     b()
 
 
-@allure.story("程序处理的日志消息的最低级别")
-def test_filter():
+@pytest.mark.meta(notes="程序处理的日志消息的最低级别")
+def test_filter() -> None:
     # 终端显示不受该段代码设置
     # 添加一个日志处理器，输出到文件
     # 设置日志最低显示级别为INFO，format将设置sink中的内容
@@ -72,8 +72,8 @@ def test_filter():
     logger.info("这是一条普通信息")
 
 
-@allure.story("文件日志（每天滚动，保留 3 天，压缩为 zip）")
-def test_write_file():
+@pytest.mark.meta(notes="文件日志（每天滚动，保留 3 天，压缩为 zip）")
+def test_write_file() -> None:
     logger.add(
         "app_{time:YYYY-MM-DD}.log",
         rotation="00:00",
@@ -81,7 +81,7 @@ def test_write_file():
         compression="zip",
         format="{time:HH:mm:ss} | {level} | {message}",
         serialize=True,  # json格式日志
-        enqueue=True # 异步日志
+        enqueue=True  # 异步日志
     )
 
-    logger.info(f"{inspect.currentframe().f_code.co_name} message")
+    logger.info(f"{shortuuid.uuid()} message")

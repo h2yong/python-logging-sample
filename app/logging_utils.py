@@ -3,7 +3,11 @@ import logging
 from typing import Any
 
 
-def get_logger(logger=None, name="base", logger_type="pa_access", channel=None, level="info") -> Any:
+def get_logger(logger: Any = None,
+               name: str = "base",
+               logger_type: str = "pa_access",
+               channel: Any = None,
+               level: str = "info") -> Any:
     """
     获取logger
 
