@@ -10,11 +10,10 @@ def get_logger(name: str = "base",
                level: Any = logging.INFO,
                env_name: str = "ENV",
                dev_env_default_name: str = "development") -> Any:
-    """
-    获取logger
+    """获取logger.
 
     :param name: 日志名称
-    :param level: 程序处理的日志消息的最低级别，值可以为"INFO"或者"logging.INFO"
+    :param level: 程序处理的日志消息的最低级别, 值可以为"INFO"或者"logging.INFO"
     :param env_name: 开发或生产环境的环境变量key
     :param dev_env_default_name: 开发环境默认的环境变量值
     :return: logger

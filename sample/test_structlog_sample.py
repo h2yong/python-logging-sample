@@ -15,6 +15,7 @@ from sample.flask_with_structlog_sample import http_app
 
 @pytest.mark.meta(notes="基础用法")
 def test_structlog_base() -> None:
+    """Demonstrates the basic usage of structlog with different log levels."""
     logger = structlog.get_logger()
     """
     Structlog 支持以下日志级别：
@@ -33,6 +34,7 @@ def test_structlog_base() -> None:
 
 @pytest.mark.meta(notes="调试日志")
 def test_structlog_dev_console() -> None:
+    """Demonstrates configuring structlog to output logs in a developer-friendly console format."""
     structlog.configure(
         processors=[
             structlog.processors.TimeStamper(fmt="iso"),
@@ -46,6 +48,7 @@ def test_structlog_dev_console() -> None:
 
 @pytest.mark.meta(notes="JSON格式日志")
 def test_structlog_json_renderer() -> None:
+    """Demonstrates configuring structlog to output logs in JSON format."""
     structlog.configure(
         processors=[
             structlog.processors.add_log_level,
@@ -58,12 +61,30 @@ def test_structlog_json_renderer() -> None:
 
 
 def set_process_id(_: Any, __: Any, event_dict: dict[Any, Any]) -> dict[Any, Any]:
+    """Add the current process ID to the event dictionary.
+
+    Parameters
+    ----------
+    _ : Any
+        Placeholder for the logger parameter (unused).
+    __ : Any
+        Placeholder for the method name parameter (unused).
+    event_dict : dict[Any, Any]
+        The event dictionary to which the process ID will be added.
+
+    Returns
+    -------
+    dict[Any, Any]
+        The updated event dictionary including the process ID.
+
+    """
     event_dict["process_id"] = os.getpid()
     return event_dict
 
 
 @pytest.mark.meta(notes="自定义event_dict字段")
 def test_set_process_id() -> None:
+    """Test adding the current process ID to the event dictionary using a custom processor."""
     structlog.configure(
         processors=[
             set_process_id,
@@ -76,6 +97,7 @@ def test_set_process_id() -> None:
 
 @pytest.mark.meta(notes="异步日志记录")
 async def log_async() -> None:
+    """Asynchronously logs a warning message using structlog."""
     logger = structlog.get_logger()
     await logger.awarning("异步日志记录")
 
@@ -84,11 +106,32 @@ asyncio.run(log_async())
 
 
 def risky_div(x: float, y: float) -> float:
+    """Divide x by y and return the result.
+
+    Parameters
+    ----------
+    x : float
+        Numerator.
+    y : float
+        Denominator.
+
+    Returns
+    -------
+    float
+        The result of x divided by y.
+
+    Raises
+    ------
+    ZeroDivisionError
+        If y is zero.
+
+    """
     return x / y
 
 
 @pytest.mark.meta(notes="捕获异常信息")
 def test_print_exception() -> None:
+    """Test logging exception information using structlog."""
     logger = structlog.get_logger()
     try:
         risky_div(1, 0)
@@ -98,6 +141,7 @@ def test_print_exception() -> None:
 
 @pytest.mark.meta(notes="bind上下文信息，上下文信息需要每次使用此logger_bind。")
 def test_bind() -> None:
+    """Test binding context information to a logger and logging a user login event."""
     logger = structlog.get_logger()
     logger_bind = logger.bind(user="alice", ip=socket.gethostbyname(socket.gethostname()))
     logger_bind.info("用户登录")
@@ -105,6 +149,7 @@ def test_bind() -> None:
 
 @pytest.mark.meta(notes="简易写文件")
 def test_write_logger_factory() -> None:
+    """Test writing logs to a file using structlog's WriteLoggerFactory."""
     structlog.configure(
         processors=[
             structlog.processors.add_log_level,
@@ -123,6 +168,7 @@ def test_write_logger_factory() -> None:
 
 @pytest.mark.meta(notes="配置日志过滤")
 def test_make_filtering_bound_logger() -> None:
+    """Test configuring structlog to filter logs below the WARNING level."""
     structlog.configure(wrapper_class=structlog.make_filtering_bound_logger(logging.WARNING))
     logger = structlog.get_logger()
     logger.info("这条消息不会显示")
@@ -131,10 +177,28 @@ def test_make_filtering_bound_logger() -> None:
 
 @pytest.mark.meta(notes="绑定上下文")
 class ContextvarsSample:
+    """Demonstrates usage of structlog context variables for binding and logging contextual information.
+
+    Methods
+    -------
+    a() -> None
+        Clears and binds context variables, then logs a message.
+    b() -> None
+        Logs a message using the current context.
+
+    """
+
     def __init__(self) -> None:
+        """Initialize the ContextvarsSample instance and set up the logger."""
         self.logger = structlog_utils.get_logger(name=__name__)
 
     def a(self) -> None:
+        """Clear and bind context variables, then log a message.
+
+        This method clears any existing structlog context variables,
+        binds new context variables for user, ip, and request_id,
+        and logs a message indicating the function was called.
+        """
         structlog.contextvars.clear_contextvars()
         structlog.contextvars.bind_contextvars(user="alice",
                                                ip=socket.gethostbyname(socket.gethostname()),
@@ -142,10 +206,12 @@ class ContextvarsSample:
         self.logger.info("this is a function")
 
     def b(self) -> None:
+        """Log a message indicating that function b was called."""
         self.logger.info("this is b function")
 
 
 def test_contextvars() -> None:
+    """Test the usage of structlog context variables by invoking methods on ContextvarsSample."""
     ctx = ContextvarsSample()
     ctx.a()
     ctx.a()
@@ -154,6 +220,7 @@ def test_contextvars() -> None:
 # https://www.structlog.org/en/stable/frameworks.html#flask
 @pytest.mark.meta(notes="在flask启动时绑定上下文")
 def test_request_id() -> None:
+    """Test that the Flask app endpoint '/api/v1/test' returns a 200 status code when provided with a request_id."""
     test_client = http_app.test_client()
     res = test_client.post(
         "/api/v1/test",

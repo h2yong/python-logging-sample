@@ -8,8 +8,7 @@ def get_logger(logger: Any = None,
                logger_type: str = "pa_access",
                channel: Any = None,
                level: str = "info") -> Any:
-    """
-    获取logger
+    """获取logger.
 
     :param logger: logger
     :param name: logger name
