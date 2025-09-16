@@ -1,9 +1,11 @@
 import json
 import os
 import sys
+
 from typing import Any
 
 import loguru._handler
+
 from loguru import logger
 from loguru._recattrs import RecordException
 

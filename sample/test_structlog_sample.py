@@ -2,6 +2,7 @@ import asyncio
 import logging
 import os
 import socket
+
 from pathlib import Path
 from typing import Any
 
@@ -10,6 +11,7 @@ import shortuuid
 import structlog
 
 from app import structlog_utils
+
 from sample.flask_with_structlog_sample import http_app
 
 

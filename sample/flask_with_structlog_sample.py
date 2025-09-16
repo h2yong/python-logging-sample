@@ -1,12 +1,14 @@
 import inspect
 import traceback
+
 from typing import Any
 
 import shortuuid
 import structlog
-from flask import Flask, request, request_started
 
 from app import structlog_utils
+from flask import Flask, request, request_started
+
 
 logger = structlog_utils.get_logger(name=__name__)
 
