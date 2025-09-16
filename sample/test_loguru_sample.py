@@ -1,4 +1,3 @@
-import inspect
 import socket
 
 import pytest
@@ -56,7 +55,7 @@ def test_print_exception() -> None:
     risky_div(1, 0)
 
 
-@pytest.mark.meta(notes="bind上下文信息，上下文信息需要每次使用此logger_bind")
+@pytest.mark.meta(notes="bind上下文信息, 上下文信息需要每次使用此logger_bind")
 def test_bind() -> None:
     """Test binding context information to the logger and logging a user login event."""
     logger_bind = logger.bind(user="alice", ip=socket.gethostbyname(socket.gethostname()))
@@ -66,7 +65,7 @@ def test_bind() -> None:
 @pytest.mark.meta(notes="延迟日志")
 def test_lazy() -> None:
     """Test lazy evaluation of log messages using logger.opt(lazy=True)."""
-    logger.opt(lazy=True).info("结果：{res}", res=lambda: sum(range(10 ** 7)))
+    logger.opt(lazy=True).info("结果: {res}", res=lambda: sum(range(10**7)))
 
 
 def a() -> None:
@@ -111,7 +110,7 @@ def test_write_file() -> None:
         compression="zip",
         format="{time:HH:mm:ss} | {level} | {message}",
         serialize=True,  # json格式日志
-        enqueue=True  # 异步日志
+        enqueue=True,  # 异步日志
     )
 
     logger.info(f"{shortuuid.uuid()} message")

@@ -20,7 +20,7 @@ def test_structlog_base() -> None:
     """Demonstrates the basic usage of structlog with different log levels."""
     logger = structlog.get_logger()
     """
-    Structlog 支持以下日志级别：
+    Structlog 支持以下日志级别:
     DEBUG: 调试信息。
     INFO: 正常事件。
     WARNING: 潜在问题。
@@ -41,7 +41,7 @@ def test_structlog_dev_console() -> None:
         processors=[
             structlog.processors.TimeStamper(fmt="iso"),
             structlog.processors.add_log_level,
-            structlog.dev.ConsoleRenderer()  # 用于调试，可打印彩色日志
+            structlog.dev.ConsoleRenderer(),  # 用于调试,可打印彩色日志
         ]
     )
     logger = structlog.get_logger()
@@ -88,10 +88,7 @@ def set_process_id(_: Any, __: Any, event_dict: dict[Any, Any]) -> dict[Any, Any
 def test_set_process_id() -> None:
     """Test adding the current process ID to the event dictionary using a custom processor."""
     structlog.configure(
-        processors=[
-            set_process_id,
-            structlog.processors.JSONRenderer()
-        ],
+        processors=[set_process_id, structlog.processors.JSONRenderer()],
     )
     logger = structlog.get_logger()
     logger.info("Create processors to modify events at runtime.")
@@ -137,11 +134,11 @@ def test_print_exception() -> None:
     logger = structlog.get_logger()
     try:
         risky_div(1, 0)
-    except Exception as e:
+    except Exception:
         logger.error("处理过程中发生错误", exc_info=True)
 
 
-@pytest.mark.meta(notes="bind上下文信息，上下文信息需要每次使用此logger_bind。")
+@pytest.mark.meta(notes="bind上下文信息, 上下文信息需要每次使用此logger_bind")
 def test_bind() -> None:
     """Test binding context information to a logger and logging a user login event."""
     logger = structlog.get_logger()
@@ -202,9 +199,7 @@ class ContextvarsSample:
         and logs a message indicating the function was called.
         """
         structlog.contextvars.clear_contextvars()
-        structlog.contextvars.bind_contextvars(user="alice",
-                                               ip=socket.gethostbyname(socket.gethostname()),
-                                               request_id=shortuuid.uuid())
+        structlog.contextvars.bind_contextvars(user="alice", ip=socket.gethostbyname(socket.gethostname()), request_id=shortuuid.uuid())
         self.logger.info("this is a function")
 
     def b(self) -> None:
