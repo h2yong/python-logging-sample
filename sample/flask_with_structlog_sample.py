@@ -1,4 +1,3 @@
-import inspect
 import traceback
 
 from typing import Any
